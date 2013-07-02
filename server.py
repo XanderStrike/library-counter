@@ -12,7 +12,7 @@ def index(name='World'):
 <body>
   <section id="main">
     <div class="inner">
- 	{{name}}   lolwut 
+ 	{{name}} 
     </div>
   </section>
 </body>
