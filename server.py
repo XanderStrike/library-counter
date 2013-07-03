@@ -9,6 +9,31 @@ import json
 
 con = lite.connect('db')
 
+@route('/api/count/<period>')
+@route('/api/count/<period>.json')
+def api_count(period='today'):
+  cur = con.cursor()
+  mod = 1
+  if period == 'hour':
+    mod = 3600
+  elif period == 'day':
+    mod = 86400
+  elif period == 'week':
+    mod = 604800
+  elif period == 'month':
+    mod = 2592000
+  elif period == 'year':
+    mod = 31536000
+  elif period == 'all':
+    cur.execute("SELECT COUNT(*) FROM Times")
+    return str(cur.fetchall()[0][0])
+  elif period == 'today':
+    cur.execute("SELECT COUNT(*) FROM Times WHERE Time > " + (str(time.time() - (time.time() % 86400)+ 25200))) 
+    return str(cur.fetchall()[0][0])
+
+  cur.execute("SELECT COUNT(*) FROM Times WHERE Time > " + str(time.time() - mod))
+  return str(cur.fetchall()[0][0])
+
 @route('/api/<period>')
 @route('/api/<period>.json')
 def api(period='day'):
