@@ -1,5 +1,6 @@
 body {margin:0px 0px 0px 0px;}
 		#main {
+			/* Using tumblr as a CDN, probably not best practice but it saves us some bits */
 			background:url(http://24.media.tumblr.com/tumblr_linam9F4Tg1qz6s22o1_1280.jpg);
 			background-size:cover;
 			background-position:center bottom;
