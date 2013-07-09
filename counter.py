@@ -10,7 +10,7 @@ import sys
 # inits
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-con = lite.connect('db')
+con = lite.connect('db/data.sqlite3')
 
 count = 0
 

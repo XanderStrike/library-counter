@@ -11,7 +11,7 @@ import json
 def enable_cors():
     response.headers['Access-Control-Allow-Origin'] = '*'
 
-con = lite.connect('db')
+con = lite.connect('db/data.sqlite3')
 
 @route('/api/count/<period>')
 @route('/api/count/<period>.json')

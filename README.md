@@ -12,7 +12,7 @@ Installation & Running
 
 **You'll Need**
 
-* Raspberry Pi (Tested for Model B Revision 2)
+* Raspberry Pi (Tested on Model B Revision 2)
 * SD Card
 * Sensor (like [this magnetic one](http://www.amazon.com/Directed-Electronics-8601-Magnetic-Switch/dp/B0009SUF08/ref=sr_1_1?ie=UTF8&qid=1373390827&sr=8-1&keywords=magnetic+door+switch) or [this infrared one](http://www.amazon.com/Enforcer-Indoor-Outdoor-Mounted-Photoelectric/dp/B001LFPB0M/ref=pd_sim_sbs_hi_2) if you're hardcore)
 * Some wires
