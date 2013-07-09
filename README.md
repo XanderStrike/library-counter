@@ -42,4 +42,4 @@ To test that you've got the sensor connected properly, simply run `counter.py` a
 
 `/api/count/<period>` Outputs a count of all recorded activity in the given time period*
 
-*Periods include `today` for current day starting at midnight, `day` for last 24 hours, `week` for last 7 days, `month` for last 30 days, `year` for last 365 days.
+*Periods include `today` for current day starting at midnight, `hour` for the past hour, `day` for last 24 hours, `week` for last 7 days, `month` for last 30 days, `year` for last 365 days.

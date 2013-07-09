@@ -7,11 +7,11 @@ import sys
 import time
 import json
 
+con = lite.connect('db/data.sqlite3')
+
 @hook('after_request')
 def enable_cors():
     response.headers['Access-Control-Allow-Origin'] = '*'
-
-con = lite.connect('db/data.sqlite3')
 
 @route('/api/count/<period>')
 @route('/api/count/<period>.json')
@@ -64,7 +64,6 @@ def api(period='day'):
 def graph():
   return static_file('graph.html', root='./static/')
 
-
 @route('/')
 def index():
   cur = con.cursor()
@@ -75,10 +74,9 @@ def index():
 <html><head><title>Library Count</title><link href='http://fonts.googleapis.com/css?family=Advent+Pro:400,300' rel='stylesheet' type='text/css'><link href="/static/homestyle.css" rel='stylesheet' type='text/css'><script src="/static/jquery-1.10.1.min.js"></script><script src="/static/jquery.sparkline.min.js"></script><script src="/static/homepage.js"></script></head><body><section id="main"><div class="inner"><h1>{{output}}</h1></div></section><center><br><br><span class="dynamicsparkline">Loading...</span><br><table width=800 style='font-family: monospace;color:#aaa;'><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td width=1%></td></tr></table></center></body></html>
 ''', output=count)
 
-# for any files in ./static/
+# for any files in static/
 @route('/static/:filename')
 def send_static(filename):
   return static_file(filename, root='./static/')
-
 
 run(host='0.0.0.0', port=80)
