@@ -1,7 +1,7 @@
 #server.py
 # Serves information for the api and the web page
 
-from bottle import hook, response, route, run, template, static_file
+from lib.bottle import hook, response, route, run, template, static_file
 import sqlite3 as lite
 import sys
 import time
