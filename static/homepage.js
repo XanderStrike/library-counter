@@ -1,10 +1,10 @@
-<html>
-<head>
-  <title>Library Count Graph</title>
-  <script src="/static/jquery-1.10.1.min.js"></script>
-  <script src="/static/jquery.sparkline.min.js"></script>
-  <script type="text/javascript">
-    // time is the resolution of the graph, in seconds
+$(window).load(function() {
+	var $windowHeight = $(window).height() - 50;
+	$('h1').css({'margin-top' : (($windowHeight) - $('h1').outerHeight())/2,'margin-bottom' : (($windowHeight) - $('h1').outerHeight())/2,'opacity' : '1.0','filter' : 'alpha(opacity = 100)',});
+	drawChart();
+});
+
+// time is the resolution of the graph, in seconds
     // larger numbers make smoother graphs
     var time = 600;
     var timeNow = Math.round(new Date().getTime() / 1000)
@@ -32,8 +32,8 @@
     }
 
     // actual function called on page load
-    $(function() {
-      $.getJSON('/api/day', function(data) {
+    function drawChart()  {
+      $.getJSON('http://librarycounter/api/day', function(data) {
         // build arr to have just integer times
         var arr = [];
         $.each(data, function(d) {
@@ -54,16 +54,7 @@
           if (tds == 24) {tds = 0}
         });
       });
-    });
-    </script>
-</head>
-<body>
-  <p>Last 24 hours of library basement activity:</p>
-<span class="dynamicsparkline">Loading...</span><br>
-<table width=800 style='font-family: monospace;color:#aaa;'>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td width=1%></td></tr>
-</table>
-</body>
-</html>
+    };
+
+
+window.setInterval(function(){$.getJSON('http://librarycounter/api/count/today',function(data){$('h1').text(data);}); drawChart();},5000);
