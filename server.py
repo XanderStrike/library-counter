@@ -67,6 +67,10 @@ def api(period='day', value=24):
 def graph():
   return static_file('graph.html', root='./static/')
 
+@route('/customgraph')
+def graph():
+  return static_file('customgraph.html', root='./static/')
+
 @route('/')
 def index():
   cur = con.cursor()
