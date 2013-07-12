@@ -1,0 +1,87 @@
+<html>
+<head>
+  <title>Library Count Graph</title>
+  <script src="/static/jquery-1.10.1.min.js"></script>
+  <script src="/static/jquery.sparkline.min.js"></script>
+  <link href="/static/homestyle.css" rel='stylesheet' type='text/css'>
+  <style>
+  	input {
+  		width:85px;
+  	}
+  	</style>
+</head>
+<body>
+	<div id="content">
+		<center>
+			<span class="dynamicsparkline">Loading...</span><br>
+		<hr>
+		<table>
+			<tr>
+				<td>Height:</td>
+				<td><input id="height" placeholder="height" value="150"/>px</td>
+			</tr>
+			<tr>
+				<td>Width:</td>
+				<td><input id="width" placeholder="width" value="800"/>px</td>
+			</tr>
+			<tr>
+				<td>Period:</td>
+				<td><input id="hours" placeholder="hours" value="24"/> hours</td>
+			</tr>
+			<tr>
+				<td>Resolution:</td>
+				<td><input id="res" placeholder="res" value="10"/> min</td>
+			</tr>
+		</table>
+		<button onclick="drawChart()" type="submit">Graph!</button>
+		</center>
+		
+	</div>
+<script>
+// pad numbers with zeros to size
+function pad(num, size) {
+  var s = num+"";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+
+// actual function called on page load
+function drawChart()  {
+	var chart_width = $("#width").val();
+	var chart_height = $("#height").val();
+	var hours = $("#hours").val();
+	var time = $("#res").val() * 60;
+	
+	var timeNow = Math.round(new Date().getTime() / 1000)
+	var timeStart = (timeNow - (timeNow % time)) - (hours * 3600)
+
+	// get the json
+  $.getJSON('http://librarycounter/api/hours/' + hours, function(data) {
+    // build arr to have just integer times
+    var arr = [];
+    $.each(data, function(d) {
+      arr.push(data[d][0] - (data[d][0] % time));
+    });
+
+    // assemble array with counts for each <time> interval
+    var counts = []
+	  for (var x=timeStart; x < timeNow; x+=time) {
+	    counts.push(0);
+	    for (var i = 0; i < arr.length; i++) {
+	      if (arr[i] == x) {
+	        counts[counts.length-1]++;
+	      }
+	    }
+	  }
+
+    // build sparkline
+    $('.dynamicsparkline').sparkline(counts, {width: chart_width, height: chart_height});
+  });
+};
+
+$(window).load(function() {
+	drawChart();
+});
+</script>
+</body>
+</html>
