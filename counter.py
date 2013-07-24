@@ -25,4 +25,4 @@ while True:
     count += 1
     print "[Counter] Another! That makes: " + str(count)
   prev_input = input
-  time.sleep(.05)
+  time.sleep(.1)
