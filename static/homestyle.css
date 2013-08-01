@@ -1,24 +1,31 @@
-body {margin:0px 0px 0px 0px;}
+body {
+  margin:0px 0px 0px 0px;
+  opacity: 0;
+} body.loaded {
+  opacity: 1;
+  transition: 1s opacity;
+}
+
 #main {
-	/* Using tumblr as a CDN, probably not best practice but it saves us some bits */
-	background:url(http://24.media.tumblr.com/tumblr_linam9F4Tg1qz6s22o1_1280.jpg);
-	background-size:cover;
-	background-position:center bottom;
+  /* Using tumblr as a CDN, probably not best practice but it saves us some bits */
+  background:url(http://24.media.tumblr.com/tumblr_linam9F4Tg1qz6s22o1_1280.jpg);
+  background-size:cover;
+  background-position:center bottom;
 }
 .inner {
-	background: rgba(0,0,0,0.2) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAGklEQVQIW2NkYGD4D8SMQAwGcAY2AbBKDBUAVuYCBQPd34sAAAAASUVORK5CYII=) repeat;
-	padding:10px 10px;
-	color:#eee;
-	min-height: calc(100% - 20px);
+  background: rgba(0,0,0,0.2) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAGklEQVQIW2NkYGD4D8SMQAwGcAY2AbBKDBUAVuYCBQPd34sAAAAASUVORK5CYII=) repeat;
+  padding:10px 10px;
+  color:#eee;
+  min-height: calc(100% - 20px);
 }
 h1 {font-family: 'Advent Pro', sans-serif;font-size:200px;text-align:center;}
 span {
-	margin-top:30px;
-	margin-bottom:30px;
+  margin-top:30px;
+  margin-bottom:30px;
 }
 
 #content {
-	margin-top:50px;
+  margin-top:50px;
   width: 800px ;
   margin-left: auto ;
   margin-right: auto ;
