@@ -6,7 +6,7 @@ $(window).load(function() {
 
 // time is the resolution of the graph, in seconds
     // larger numbers make smoother graphs
-    var time = 600;
+    var time = 900;
     var timeNow = Math.round(new Date().getTime() / 1000)
     var time24HoursAgo = (timeNow - (timeNow % time)) - 86400
 
