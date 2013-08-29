@@ -7,6 +7,8 @@ This simple python app was designed to run on a Raspberry Pi (R2) and interface 
 
 Similar systems can cost hundreds or thousands of dollars and have half the features. This does it for less than $150.
 
+Background image and code by Alexander Standke.
+
 Installation & Running
 --------------------
 
