@@ -2,7 +2,7 @@
 <head>
   <title>Library Count Graph</title>
   <script src="/static/jquery-1.10.1.min.js"></script>
-  <script src="/static/jquery.sparkline.min.js"></script>
+  <script src="/static/jquery.flot.js"></script>
   <link href="/static/homestyle.css" rel='stylesheet' type='text/css'>
   <style>
   	input {
@@ -13,24 +13,16 @@
 <body class="loaded">
 	<div id="content">
 		<center>
-			<span class="dynamicsparkline">Loading...</span><br>
+			<div id="placeholder" style="height:200px;width:800px;"></div><br>
 		<hr>
 		<table>
-			<tr>
-				<td>Height:</td>
-				<td><input id="height" placeholder="height" value="150"/>px</td>
-			</tr>
-			<tr>
-				<td>Width:</td>
-				<td><input id="width" placeholder="width" value="800"/>px</td>
-			</tr>
 			<tr>
 				<td>Period:</td>
 				<td><input id="hours" placeholder="hours" value="24"/> hours</td>
 			</tr>
 			<tr>
 				<td>Resolution:</td>
-				<td><input id="res" placeholder="res" value="10"/> min</td>
+				<td><input id="res" placeholder="res" value="15"/> min</td>
 			</tr>
 		</table>
 		<button onclick="drawChart()" type="submit">Graph!</button>
@@ -45,10 +37,26 @@ function pad(num, size) {
   return s;
 }
 
+// turn integer time into human readable hh:mm
+function to_time(int_time) {
+  var date = new Date(int_time * 1000)
+  var month = date.getMonth();
+  var day = date.getDay();
+  var hh = date.getHours();
+  var mm = date.getMinutes();
+
+  if (hh > 12) {ampm = "pm"} else {ampm = "am"}
+  if (hh == 0) {hh = 12;}
+  if (hh > 12) {hh = hh - 12;}
+  if (mm < 10) {mm = "0"+mm;}
+
+  return month+"/"+day+" "+hh+":"+mm+""+ampm
+}
+
 // actual function called on page load
 function drawChart()  {
-	var chart_width = $("#width").val();
-	var chart_height = $("#height").val();
+	// var chart_width = $("#width").val();
+	// var chart_height = $("#height").val();
 	var hours = $("#hours").val();
 	var time = $("#res").val() * 60;
 	
@@ -66,16 +74,25 @@ function drawChart()  {
     // assemble array with counts for each <time> interval
     var counts = []
 	  for (var x=timeStart; x < timeNow; x+=time) {
-	    counts.push(0);
-	    for (var i = 0; i < arr.length; i++) {
-	      if (arr[i] == x) {
-	        counts[counts.length-1]++;
-	      }
-	    }
+	    counts.push([x, 0]);
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] == x) {
+          counts[counts.length-1][1]++;
+        }
+      }
 	  }
 
     // build sparkline
-    $('.dynamicsparkline').sparkline(counts, {width: chart_width, height: chart_height});
+    $.plot('#placeholder', 
+            [counts],
+            {
+              xaxis: {
+                tickFormatter: to_time
+              },
+              lines: {
+                fill: true
+              }
+            });
   });
 };
 
@@ -85,3 +102,4 @@ $(window).load(function() {
 </script>
 </body>
 </html>
+
