@@ -1,13 +1,24 @@
 <html>
 <head>
   <title>Library Count Graph</title>
-  <script src="/static/jquery-1.10.1.min.js"></script>
-  <script src="/static/jquery.flot.js"></script>
-  <link href="/static/homestyle.css" rel='stylesheet' type='text/css'>
+  <script src="jquery-1.10.1.min.js"></script>
+  <script src="jquery.flot.js"></script>
+  <link href="homestyle.css" rel='stylesheet' type='text/css'>
   <style>
   	input {
   		width:85px;
   	}
+
+    #flotPlaceholder div.xAxis div.tickLabel 
+{    
+    transform: rotate(-90deg);
+    -ms-transform:rotate(-90deg); /* IE 9 */
+    -moz-transform:rotate(-90deg); /* Firefox */
+    -webkit-transform:rotate(-90deg); /* Safari and Chrome */
+    -o-transform:rotate(-90deg); /* Opera */
+    /*rotation-point:50% 50%;*/ /* CSS3 */
+    /*rotation:270deg;*/ /* CSS3 */
+}
   	</style>
 </head>
 <body class="loaded">
@@ -40,8 +51,6 @@ function pad(num, size) {
 // turn integer time into human readable hh:mm
 function to_time(int_time) {
   var date = new Date(int_time * 1000)
-  var month = date.getMonth();
-  var day = date.getDay();
   var hh = date.getHours();
   var mm = date.getMinutes();
 
@@ -50,13 +59,18 @@ function to_time(int_time) {
   if (hh > 12) {hh = hh - 12;}
   if (mm < 10) {mm = "0"+mm;}
 
-  return month+"/"+day+" "+hh+":"+mm+""+ampm
+  return hh+":"+mm+ampm
+}
+function to_date(int_time) {
+  var date = new Date(int_time * 1000)
+  var month = date.getMonth();
+  var day = date.getDate();
+
+  return month+"/"+day
 }
 
 // actual function called on page load
 function drawChart()  {
-	// var chart_width = $("#width").val();
-	// var chart_height = $("#height").val();
 	var hours = $("#hours").val();
 	var time = $("#res").val() * 60;
 	
@@ -82,12 +96,18 @@ function drawChart()  {
       }
 	  }
 
-    // build sparkline
+    // which function for tick labels
+    var tick_calc = to_time;
+    if (parseInt(hours) > 48) {
+      tick_calc = to_date;
+    }
+
+    // create plot
     $.plot('#placeholder', 
             [counts],
             {
               xaxis: {
-                tickFormatter: to_time
+                tickFormatter: tick_calc
               },
               lines: {
                 fill: true
