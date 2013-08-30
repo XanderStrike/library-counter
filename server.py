@@ -32,7 +32,7 @@ def api_count(period='today'):
     cur.execute("SELECT COUNT(*) FROM Times")
     return str(cur.fetchall()[0][0])
   elif period == 'today':
-    cur.execute("SELECT COUNT(*) FROM Times WHERE Time > " + (str((time.time() - (time.time() % 86400))+25200))) 
+    cur.execute("SELECT COUNT(*) FROM Times WHERE Time > " + (str((time.time() - (time.time()-25200) % 86400)))) 
     return str(cur.fetchall()[0][0])
 
   cur.execute("SELECT COUNT(*) FROM Times WHERE Time > " + str(time.time() - mod))
@@ -56,6 +56,9 @@ def api(period='day', value=24):
     mod = 31536000
   elif period == 'hours':
     mod = 3600 * int(value)
+  elif period == 'today':
+    cur.execute("SELECT * FROM Times WHERE Time > " + (str((time.time() - (time.time() % 86400))+25200)))
+    return str(cur.fetchall())
   elif period == 'all':
     cur.execute("SELECT * FROM Times")
     return json.dumps(cur.fetchall())
