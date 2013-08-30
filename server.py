@@ -76,12 +76,7 @@ def graph():
 
 @route('/')
 def index():
-  cur = con.cursor()
-  cur.execute("SELECT COUNT(*) FROM Times WHERE Time > " + (str((time.time() - (time.time() % 86400))+25200)))
-  count = cur.fetchall()[0][0]
-  return template('''
-<html><head><title>Library Count</title><link href='http://fonts.googleapis.com/css?family=Advent+Pro:400,300' rel='stylesheet' type='text/css'><link href="/static/homestyle.css" rel='stylesheet' type='text/css'><script src="/static/jquery-1.10.1.min.js"></script><script src="/static/jquery.sparkline.min.js"></script><script src="/static/homepage.js"></script></head><body><section id="main"><div class="inner"><h1>{{output}}</h1></div></section><center><br><br><span class="dynamicsparkline">Loading...</span><br><table width=800 style='font-family: monospace;color:#aaa;'><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td width=1%></td></tr></table></center><script>window.onload = function() {document.body.className += ' loaded'};</script></body></html>
-''', output=count)
+  return static_file('home.html', root='./static/')
 
 # for any files in static/
 @route('/static/:filename')
