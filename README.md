@@ -38,10 +38,14 @@ To test that you've got the sensor connected properly, simply run `counter.py` a
 
 `/graph` Displays a graph of activity over the last 24 hours. Useful for embedding into larger information boards.
 
+`/customgraph` Displays a custom graph given an interval.
+
 **API**
 
 `/api/<period>` Outputs a JSON array of all the times in the given time period*
 
 `/api/count/<period>` Outputs a count of all recorded activity in the given time period*
+
+`/api/interval/<start>/<end>` Outputs a JSON array of all times that fall between the start and end times (given in integer time)
 
 *Periods include `today` for current day starting at midnight, `hour` for the past hour, `day` for last 24 hours, `week` for last 7 days, `month` for last 30 days, `year` for last 365 days.
