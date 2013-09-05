@@ -1,3 +1,10 @@
+// homepage.js
+// Javascript for the homepage.
+//   Contains functions both for the automatic updating of the large counter and
+//   the drawing of the graph
+//
+// Alex Standke
+
 $(window).load(function() {
 	var $windowHeight = $(window).height()-600;
 	$('h1').css({'margin-top' : (($windowHeight) - $('h1').outerHeight())/2,'opacity' : '1.0','filter' : 'alpha(opacity = 100)',});

@@ -66,6 +66,13 @@ def api(period='day', value=24):
   cur.execute("SELECT * FROM Times WHERE Time > " + str(time.time() - mod))
   return json.dumps(cur.fetchall())
 
+@route('/api/interval/<start>/<end>')
+@route('/api/interval/<start>/<end>.json')
+def api_interval(start, end):
+  cur = con.cursor()
+  cur.execute("SELECT * FROM Times WHERE Time > " + start + " AND Time < " + end)
+  return json.dumps(cur.fetchall())
+
 @route('/graph')
 def graph():
   return static_file('graph.html', root='./static/')
@@ -73,6 +80,10 @@ def graph():
 @route('/customgraph')
 def graph():
   return static_file('customgraph.html', root='./static/')
+
+@route('/humans.txt')
+def humans():
+  return static_file('humans.txt', root='./static/')
 
 @route('/')
 def index():

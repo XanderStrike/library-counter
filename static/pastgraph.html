@@ -5,58 +5,37 @@
   <script src="/static/jquery.flot.js"></script>
   <link href="/static/homestyle.css" rel='stylesheet' type='text/css'>
   <style>
-    input {
-      width:150px;
-    }
-    </style>
+  	input {
+  		width:85px;
+  	}
+  	</style>
 </head>
 <body class="loaded">
-  <div id="content">
-    <center>
-      <div id="placeholder" style="height:200px;width:800px;"></div><br>
-      <div id="status">Enter some values:</div>
-    <hr>
-    <table>
-      <tr>
-        <td>Start Time:</td>
-        <td><input type="time" id="start_time" value="00:00"/></td>
-      </tr>
-      <tr>
-        <td>Start Date:</td>
-        <td><input type="date" id="start_date" /></td>
-      </tr>
-      <tr>
-        <td>End Time:</td>
-        <td><input type="time" id="end_time" value="23:59"/></td>
-      </tr>
-      <tr>
-        <td>End Date:</td>
-        <td><input type="date" id="end_date" /></td>
-      </tr>
-      <tr>
-        <td>Resolution:</td>
-        <td><input id="res" placeholder="res" value="15"/> min</td>
-      </tr>
-    </table>
-    <button onclick="drawChart()" type="submit">Graph!</button>
-    </center>
-    
-  </div>
+	<div id="content">
+		<center>
+			<div id="placeholder" style="height:200px;width:800px;"></div><br>
+      <div id="status"></div>
+		<hr>
+		<table>
+			<tr>
+				<td>Period:</td>
+				<td><input id="hours" placeholder="hours" value="24"/> hours</td>
+			</tr>
+			<tr>
+				<td>Resolution:</td>
+				<td><input id="res" placeholder="res" value="15"/> min</td>
+			</tr>
+		</table>
+		<button onclick="drawChart()" type="submit">Graph!</button>
+		</center>
+		
+	</div>
 <script>
 // pad numbers with zeros to size
 function pad(num, size) {
   var s = num+"";
   while (s.length < size) s = "0" + s;
   return s;
-}
-
-function defaultDates() {
-  var now = new Date();
-  var month = pad((now.getMonth() + 1), 2);
-  var day = pad(now.getDate(), 2);
-  var today = now.getFullYear() + '-' + month + '-' + day;
-  $('#start_date').val(today);
-  $('#end_date').val(today);
 }
 
 // turn integer time into human readable
@@ -87,19 +66,14 @@ function status(message) {
 // draw the plot
 function drawChart()  {
   status("Fetching...");
-  var time = parseInt($("#res").val()) * 60;
+	var hours = $("#hours").val();
+	var time = $("#res").val() * 60;
+	
+	var timeNow = Math.round(new Date().getTime() / 1000)
+	var timeStart = (timeNow - (timeNow % time)) - (hours * 3600)
 
-  var start_time = $("#start_time").val();
-  var start_date = $("#start_date").val();
-  var start = Date.parse(start_date + " " + start_time) / 1000;
-
-  var end_time = $("#end_time").val();
-  var end_date = $("#end_date").val();
-  var end = Date.parse(end_date + " " + end_time) / 1000;
-
-
-  // get the json
-  $.getJSON('http://librarycounter/api/interval/' + start + '/' + end, function(data) {
+	// get the json
+  $.getJSON('http://librarycounter/api/hours/' + hours, function(data) {
     // build arr to have just integer times
     var arr = [];
     $.each(data, function(d) {
@@ -108,18 +82,18 @@ function drawChart()  {
 
     // assemble array with counts for each <time> interval
     var counts = []
-    for (var x=start; x < end; x+=time) {      
-      counts.push([x, 0]);
+	  for (var x=timeStart; x < timeNow; x+=time) {      
+	    counts.push([x, 0]);
       for (var i = 0; i < arr.length; i++) {
         if (arr[i] == x) {
           counts[counts.length-1][1]++;
         }
       }
-    }
+	  }
 
     // which function for tick labels
     var tick_calc = to_time;
-    if ((end - start) > 259140) {
+    if (parseInt(hours) > 48) {
       tick_calc = to_date;
     }
 
@@ -138,11 +112,11 @@ function drawChart()  {
   });
 };
 
-$(document).ready( function() {
-  defaultDates();
-  drawChart();
+$(window).load(function() {
+	drawChart();
 });
 </script>
 </body>
 </html>
+
 
